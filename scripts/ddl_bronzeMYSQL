@@ -1,0 +1,80 @@
+delimiter $$
+create procedure bronze.load_bronze()
+select 'creating table of crm section' ;
+begin
+
+declare start_time datetime;
+declare end_time datetime;
+declare batch_start_time datetime,batch_end_time datetime;
+set batch_start_time = now();
+set start_time = now();
+CREATE TABLE if not exists bronze.crm_cust_info (
+    cst_id INT,
+    cst_key NVARCHAR(50),
+    cst_firstname NVARCHAR(50),
+    cst_lastname NVARCHAR(50),
+    cst_materail_status NVARCHAR(50),
+    cst_gndr NVARCHAR(50),
+    cst_create_date DATE
+);
+set end_time = now();
+select concat('time taken :',timediff(start_time,end_time),'seconds');
+
+set start_time = now();
+CREATE TABLE if not exists bronze.crm_prd_info (
+    prd_id INT,
+    prd_key NVARCHAR(50),
+    prd_nm NVARCHAR(50),
+    prd_cost NVARCHAR(50),
+    prd_line NVARCHAR(10),
+    prd_start DATE,
+    prd_end_date DATE
+);
+set end_time = now();
+select concat('time taken :',timediff(start_time,end_time),'seconds');
+
+set start_time = now();
+CREATE TABLE if not exists bronze.crm_sales_details (
+    sls_ord_num NVARCHAR(50),
+    sls_prd_key NVARCHAR(50),
+    sls_cust_id INT,
+    sls_order_dt INT,
+    sls_ship_dt INT,
+    sls_due_dt INT,
+    sls_sales INT,
+    sls_quantity INT,
+    sls_price INT
+);
+set end_time = now();
+select concat('time taken :',timediff(start_time,end_time),'seconds');
+
+select 'creating table of erp section';
+set start_time = now();
+CREATE TABLE if not exists bronze.erp_cust_az12 (
+    cid NVARCHAR(50),
+    bdate DATE,
+    gen VARCHAR(10)
+);
+set end_time = now();
+select concat('time taken :',timediff(start_time,end_time),'seconds');
+
+set start_time = now();
+CREATE TABLE if not exists bronze.erp_loc_a101 (
+    cid NVARCHAR(50),
+    cntry VARCHAR(50)
+);
+set end_time = now();
+select concat('time taken :',timediff(start_time,end_time),'seconds');
+
+set start_time = now();
+CREATE TABLE if not exists bronze.erp_px_cat_g1v2 (
+    id NVARCHAR(50),
+    cat NVARCHAR(50),
+    suncat VARCHAR(50),
+    maintenance VARCHAR(20)
+);
+set end_time = now();
+select concat('time taken :',timediff(start_time,end_time),'seconds');
+set batch_end_time = now();
+select concat("total duration",timediff(batch_start_time,batch_end_time),'seconds');
+end$$
